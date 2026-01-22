@@ -2,6 +2,7 @@ package my.netflix.clone.controller;
 
 import my.netflix.clone.entity.User;
 import my.netflix.clone.repository.UserRepository;
+import my.netflix.clone.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,15 +13,13 @@ import java.util.List;
 @RequestMapping("/api")
 public class UserManagementController {
 
-    @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @GetMapping("/db-connectivit")
     public ResponseEntity<String> testDatabaseConnectivity() {
         try {
             // Try to count users in the database
-            long userCount = userRepository.count();
-            return ResponseEntity.ok("Database connectivity successful! User count: " + userCount);
+            return ResponseEntity.ok("Database connectivity successful! User count: " + userService.count());
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Database connectivity failed: " + e.getMessage());
         }
@@ -29,8 +28,7 @@ public class UserManagementController {
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers() {
         try {
-            List<User> users = userRepository.findAll();
-            return ResponseEntity.ok(users);
+            return ResponseEntity.ok(userService.findAll());
         } catch (Exception e) {
             return ResponseEntity.status(500).build();
         }
@@ -39,13 +37,7 @@ public class UserManagementController {
     @PostMapping("/create-user")
     public ResponseEntity<User> createTestUser() {
         try {
-            User testUser = new User();
-            testUser.setUsername("test_user_" + System.currentTimeMillis());
-            testUser.setEmail("test@example.com");
-            testUser.setPassword("password123");
-
-            User savedUser = userRepository.save(testUser);
-            return ResponseEntity.ok(savedUser);
+            return ResponseEntity.ok(userService.createUser());
         } catch (Exception e) {
             return ResponseEntity.status(500).build();
         }
