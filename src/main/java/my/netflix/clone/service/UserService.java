@@ -2,9 +2,11 @@ package my.netflix.clone.service;
 
 import my.netflix.clone.entity.User;
 import my.netflix.clone.repository.UserRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class UserService {
 
     private UserRepository userRepository;

@@ -1,7 +1,6 @@
 package my.netflix.clone.controller;
 
 import my.netflix.clone.entity.User;
-import my.netflix.clone.repository.UserRepository;
 import my.netflix.clone.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +12,12 @@ import java.util.List;
 @RequestMapping("/api")
 public class UserManagementController {
 
-    private UserService userService;
+    private final UserService userService;
+
+    @Autowired
+    public UserManagementController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/db-connectivit")
     public ResponseEntity<String> testDatabaseConnectivity() {
